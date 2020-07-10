@@ -1,12 +1,12 @@
 import numpy as np
 import pandas as pd
 import logger
-from sklearn.decomposition import PCA
+'''from sklearn.decomposition import PCA
 from imblearn.over_sampling import RandomOverSampler, SMOTE
 from imblearn.under_sampling import RandomUnderSampler
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler'''
 
 class DataPreprocessor:
     """
@@ -82,17 +82,17 @@ class DataPreprocessor:
                     else:
                         for columns in Missing_data_columns:  # Iterating over the columns having Nan Values
                             if dataframe[columns].dtype == 'object':  # Checking for the categorical data
-                                Mode = dataframe[columns].mode()[0]
-                                dataframe[columns].fillna(Mode,
+                                mode = dataframe[columns].mode()[0]
+                                dataframe[columns].fillna(mode,
                                                           inplace=True)  # Imputing Nan values with mode of the column
                             else:
                                 if strategy == 'median':  # checking if the strategy == median
-                                    Median = dataframe[columns].median()
-                                    dataframe[columns].fillna(Median,
+                                    median = dataframe[columns].median()
+                                    dataframe[columns].fillna(median,
                                                               inplace=True)  # Imputing Nan values with median of the column
                                 else:  # The only strategy remains is mean
-                                    Mean = dataframe[columns].mean()
-                                    dataframe[columns].fillna(Mean,
+                                    mean = dataframe[columns].mean()
+                                    dataframe[columns].fillna(mean,
                                                               inplace=True)  # Imputing Nan values with mean of the column
 
                 else:
@@ -247,7 +247,7 @@ class DataPreprocessor:
         Output: A DataFrame with numerical columns with low std dev dropped.
         On Failure: Raise Exception
 
-        Written By: iNeuron Intelligence
+        Written By: PUNIT NANDA
         Version: 1.0
         Revisions: None
 
@@ -276,7 +276,7 @@ class DataPreprocessor:
         Output: Standardized data where mean of each column will be 0 and standard deviation will be 1.
         On Failure: Raise Exception
 
-        Written By: iNeuron Intelligence
+        Written By: Abhishek Kulkarni
         Version: 1.0
         Revisions: None
 
@@ -301,7 +301,7 @@ class DataPreprocessor:
         Output: Normalized data where minimum value of each column will be 0 and maximum value of each column will be 1.
         On Failure: Raise Exception
 
-        Written By: iNeuron Intelligence
+        Written By: Abhishek Kulkarni
         Version: 1.0
         Revisions: None
 
@@ -328,7 +328,7 @@ class DataPreprocessor:
 
         On Failure : Raise Exception
 
-        Written by : iNeuron Intelligence
+        Written by : saravanan
 
         version    : 1.0
 
@@ -370,7 +370,7 @@ class DataPreprocessor:
             columns = ['PC' + str(i) for i in range(1, Exp_var + 1)]
             pca_data = pd.DataFrame(data=x_pca, columns=columns)
 
-            self.logger_object.log(self.file_object, "C:: the PCA method of the DataPreprocessor class')
+            self.logger_object.log(self.file_object, "C:: the PCA method of the DataPreprocessor class")
             return pca_data
 
 
