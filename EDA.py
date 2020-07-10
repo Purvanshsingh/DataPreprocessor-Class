@@ -151,74 +151,6 @@ class DataPreprocessor:
             self.logger_object.log(self.file_object, "type_converted DataFrame Returned Successfully")
             return dataset
 
-    def pca(self, data, var_explained):
-        """
-        Method Name: pca
-        Description: This method reduces the dimension from scaled Data which enables
-                     quick for large data files.
-
-        input      : Data which is Scaled since PCA works on continous data
-                     var_explained is no_components in PCA , default value passed.
-
-        Output     : It returns the scaled and reduced dimensions.
-
-        On Failure : Raise Exception
-
-        Written by : iNeuron Intelligence
-
-        version    : 1.0
-
-        revisions  : None.
-
-
-        """
-
-        self.data = data
-        self.var_explained = var_explained
-        pca = PCA()
-        self.logger_object.log(self.file_object, 'S::Entered the PCA method of the DataPreprocessor class')
-        try:
-
-            # initializing with different combination of parameters
-            self.parameter_grid = {"n_components": [1, 2, 3, 4, 5, 6, 7, 8, 9],
-                                   "svd_solver": ['auto', 'full', 'arpack', 'randomized']}
-
-            # Creating an object of the Grid Search class
-            grid = GridSearchCV(estimator=PCA, param_grid=parameter_grid, cv=3, verbose=3)
-
-            # Finding Best parameters
-            grid.fit(data)
-
-            # extracting the best parameters
-            self.n_components = grid.best_params_['n_components']
-            self.svd_solver = grid.best_params_['svd_solver']
-
-            # creating pca dataset with the best parameters
-            pca = PCA(n_components=self.n_components, svd_solver=self.svd_solver)
-            # applying PCA model
-            pca.fit(data)
-            Exp_var = var_explained * 10  ##pca.explained_variance_ratio_#default=0.90
-            self.logger_object.log(self.file_object, 'I : PCA best params: ' + str(
-                self.grid.best_params_))
-
-            x_pca = pca.transform(data)
-            # Make Dataframe with pca data
-            columns = ['PC' + str(i) for i in range(1, Exp_var + 1)]
-            pca_data = pd.DataFrame(data=x_pca, columns=columns)
-
-            self.logger_object.log(self.file_object, "C:: the PCA method of the DataPreprocessor class')
-            return pca_data
-
-
-        except Exception as e:
-            self.logger_object.log(self.file_object,
-                                   'E : Exception occured in PCA method of the Data Preprocessor class. Exception message:  ' + str(
-                                       e))
-            self.logger_object.log(self.file_object,
-                                   'E : Unsuccessful. Exited the PCA method of the DataPreprocessor class')
-
-            raise Exception()
-
     def remove_imbalance(self, data, target, threshold=10.0, oversample=True, smote=False):
         """
         Method Name: remove_imbalance
@@ -382,6 +314,73 @@ class DataPreprocessor:
         except Exception as e:
             self.logger_object.log(self.file_object,
                                    'Exception occured while stadardizing data. Exception message:  ' + str(e))
+            raise Exception()
+    def pca(self, data, var_explained):
+        """
+        Method Name: pca
+        Description: This method reduces the dimension from scaled Data which enables
+                     quick for large data files.
+
+        input      : Data which is Scaled since PCA works on continous data
+                     var_explained is no_components in PCA , default value passed.
+
+        Output     : It returns the scaled and reduced dimensions.
+
+        On Failure : Raise Exception
+
+        Written by : iNeuron Intelligence
+
+        version    : 1.0
+
+        revisions  : None.
+
+
+        """
+
+        self.data = data
+        self.var_explained = var_explained
+        pca = PCA()
+        self.logger_object.log(self.file_object, 'S::Entered the PCA method of the DataPreprocessor class')
+        try:
+
+            # initializing with different combination of parameters
+            self.parameter_grid = {"n_components": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                                   "svd_solver": ['auto', 'full', 'arpack', 'randomized']}
+
+            # Creating an object of the Grid Search class
+            grid = GridSearchCV(estimator=pca, param_grid=parameter_grid, cv=3, verbose=3)
+
+            # Finding Best parameters
+            grid.fit(data)
+
+            # extracting the best parameters
+            self.n_components = grid.best_params_['n_components']
+            self.svd_solver = grid.best_params_['svd_solver']
+
+            # creating pca dataset with the best parameters
+            pca = PCA(n_components=self.n_components, svd_solver=self.svd_solver)
+            # applying PCA model
+            pca.fit(data)
+            Exp_var = var_explained * 10  ##pca.explained_variance_ratio_#default=0.90
+            self.logger_object.log(self.file_object, 'I : PCA best params: ' + str(
+                self.grid.best_params_))
+
+            x_pca = pca.transform(data)
+            # Make Dataframe with pca data
+            columns = ['PC' + str(i) for i in range(1, Exp_var + 1)]
+            pca_data = pd.DataFrame(data=x_pca, columns=columns)
+
+            self.logger_object.log(self.file_object, "C:: the PCA method of the DataPreprocessor class')
+            return pca_data
+
+
+        except Exception as e:
+            self.logger_object.log(self.file_object,
+                                   'E : Exception occured in PCA method of the Data Preprocessor class. Exception message:  ' + str(
+                                       e))
+            self.logger_object.log(self.file_object,
+                                   'E : Unsuccessful. Exited the PCA method of the DataPreprocessor class')
+
             raise Exception()
 
 if __name__ == '__main__':
