@@ -1,12 +1,12 @@
 import numpy as np
 import pandas as pd
 import logger
-'''from sklearn.decomposition import PCA
+from sklearn.decomposition import PCA
 from imblearn.over_sampling import RandomOverSampler, SMOTE
 from imblearn.under_sampling import RandomUnderSampler
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import MinMaxScaler'''
+from sklearn.preprocessing import MinMaxScaler
 
 class DataPreprocessor:
     """
